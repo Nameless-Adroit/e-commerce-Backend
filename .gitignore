@@ -1,0 +1,37 @@
+# Environment variables & credentials
+.env
+.env*.local
+*.pem
+*.key
+
+# Dependencies
+node_modules/
+
+# Build and output directories
+dist/
+build/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+
+# Python caches
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Temporary / Scratch test files
+test.txt
+
+# Editor & OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

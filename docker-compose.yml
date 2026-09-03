@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  postgres_db:
+    image: postgres:16-alpine
+    container_name: ecommerce_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ecommerce_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+      - ./database/schema-postgres.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - ecommerce_network
+
+  mysql_db:
+    image: mysql:8.0
+    container_name: ecommerce_mysql
+    restart: unlessstopped
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: ecommerce_db
+      MYSQL_USER: ecom_user
+      MYSQL_PASSWORD: ecom_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database/schema-mysql.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - ecommerce_network
+
+
+  adminer:
+    image: adminer:latest
+    container_name: ecommerce_adminer
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    networks:
+      - ecommerce_network
+    depends_on:
+      - postgres_db
+      - mysql_db
+
+volumes:
+  pg_data:
+  mysql_data:
+
+networks:
+  ecommerce_network:
+    driver: bridge
